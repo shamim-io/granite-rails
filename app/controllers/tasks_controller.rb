@@ -1,10 +1,11 @@
 class TasksController < ApplicationController
+  
+  before_action :load_task, only: %i[show update destroy]
+  
     def index
         tasks = Task.all
         render status: :ok, json: { tasks: tasks }
     end
-
-    before_action :load_task, only: %i[show update]
 
     def show
       render status: :ok, json: { task: @task }
@@ -27,6 +28,15 @@ class TasksController < ApplicationController
         render status: :ok, json: { notice: 'Successfully updated task.'}
       else
         render status: :unprocessable_entity, json: { errors: @task.errors.full_messages }
+      end
+    end
+
+    def destroy
+      if @task.destroy
+        render status: :ok, json: { notice: 'Successfully deleted task.' }
+      else
+        render status: :unprocessable_entity, json: { errors:
+        @task.errors.full_messages }
       end
     end
 
