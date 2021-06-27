@@ -8,7 +8,10 @@ class TasksController < ApplicationController
     end
 
     def show
-      render status: :ok, json: { task: @task }
+      task_creator = User.find(@task.creator_id).name
+      render status: :ok, json: { task: @task,
+                                  assigned_user: @task.user,
+                                  task_creator: task_creator }
     end
 
     def create
@@ -49,6 +52,6 @@ class TasksController < ApplicationController
     end
 
     def task_params
-      params.require(:task).permit(:title)
+      params.require(:task).permit(:title, :user_id)
     end
 end
