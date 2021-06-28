@@ -10,8 +10,9 @@ import ShowTask from "components/Tasks/ShowTask";
 import EditTask from "components/Tasks/EditTask";
 import Signup from "components/Authentication/Signup";
 import Login from "components/Authentication/Login";
-import Signup from "components/Authentication/Signup";
-import PrivateRoute from "components/Common/PrivateRoute";
+import PrivateRoute from "./common/PrivateRoute"
+import { getFromLocalStorage } from "helpers/storage";
+import PageLoader from "components/PageLoader";
 
 const App = () => {
   const [loading, setLoading] = useState(true);

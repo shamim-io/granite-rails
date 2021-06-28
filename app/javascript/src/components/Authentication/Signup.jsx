@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import SignupForm from "components/Authentication/Form/SignupForm";
 import authApi from "apis/auth";
+import Logger from "js-logger";
 
 const Signup = ({ history }) => {
   const [name, setName] = useState("");
@@ -26,7 +27,7 @@ const Signup = ({ history }) => {
       history.push("/");
     } catch (error) {
       setLoading(false);
-      logger.error(error);
+      Logger.error(error);
     }
   };
   return (
