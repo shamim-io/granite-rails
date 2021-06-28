@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import Container from "components/Container";
 import PageLoader from "components/PageLoader";
 import tasksApi from "apis/tasks";
+import Logger from "js-logger";
 
 const ShowTask = () => {
   const { slug } = useParams();
@@ -19,11 +20,15 @@ const ShowTask = () => {
       setAssignedUser(response.data.assigned_user);
       setTaskCreator(response.data.task_creator);
     } catch (error) {
-      logger.error(error);
+      Logger.error(error);
     } finally {
       setPageLoader(false);
     }
   };
+
+  const updateTask = () => {
+  history.push(`/tasks/${taskDetails.slug}/edit`);
+};
 
   useEffect(() => {
     fetchTaskDetails();
