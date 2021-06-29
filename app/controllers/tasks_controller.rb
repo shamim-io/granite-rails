@@ -2,11 +2,25 @@ class TasksController < ApplicationController
   before_action :authenticate_user_using_x_auth_token
   before_action :load_task, only: %i[show update destroy]
 
+  # def index
+  #   tasks = policy_scope(Task)
+  #   pending_tasks = tasks.pending
+  #   completed_tasks = tasks.completed
+  #   render status: :ok, json: { tasks: { pending: pending_tasks, completed: completed_tasks } }
+  # end
+
   def index
     tasks = policy_scope(Task)
-    pending_tasks = tasks.pending
-    completed_tasks = tasks.completed
-    render status: :ok, json: { tasks: { pending: pending_tasks, completed: completed_tasks } }
+    render status: :ok, json: {
+      tasks: {
+        pending: tasks.organize(:pending).as_json(include: {
+          user: {
+            only: [:name, :id]
+          }
+        }),
+        completed: tasks.organize(:completed)
+      }
+    }
   end
 
   def create
@@ -62,7 +76,7 @@ class TasksController < ApplicationController
   private
 
   def task_params
-    params.require(:task).permit(:title, :user_id, :progress, :authorize_owner)
+    params.require(:task).permit(:title, :user_id, :progress, :status, :authorize_owner)
   end
 
   def load_task
